@@ -1,0 +1,7 @@
+{
+  "name": "cosmos-app",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular-standalone"
+}

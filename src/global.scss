@@ -1,0 +1,135 @@
+/*
+ * App Global CSS
+ * ----------------------------------------------------------------------------
+ * Put style rules here that you want to apply globally. These styles are for
+ * the entire app and not just one component. Additionally, this file can be
+ * used as an entry point to import other CSS/Sass files to be included in the
+ * output CSS.
+ * For more information on global stylesheets, visit the documentation:
+ * https://ionicframework.com/docs/layout/global-stylesheets
+ */
+
+/* Import theme configuration */
+@import './theme/variables.scss';
+
+/* Core CSS required for Ionic components to work properly */
+@import '@ionic/angular/css/core.css';
+
+/* Basic CSS for apps built with Ionic */
+@import '@ionic/angular/css/normalize.css';
+@import '@ionic/angular/css/structure.css';
+@import '@ionic/angular/css/typography.css';
+@import '@ionic/angular/css/display.css';
+
+/* Optional CSS utils that can be commented out */
+@import '@ionic/angular/css/padding.css';
+@import '@ionic/angular/css/float-elements.css';
+@import '@ionic/angular/css/text-alignment.css';
+@import '@ionic/angular/css/text-transformation.css';
+@import '@ionic/angular/css/flex-utils.css';
+
+/**
+ * Ionic Dark Mode
+ * -----------------------------------------------------
+ * For more info, please see:
+ * https://ionicframework.com/docs/theming/dark-mode
+ */
+
+/* @import "@ionic/angular/css/palettes/dark.always.css"; */
+/* @import "@ionic/angular/css/palettes/dark.class.css"; */
+@import '@ionic/angular/css/palettes/dark.system.css';
+
+// /* Global styles */
+// body {
+//   font-family: var(--ion-font-family);
+//   -webkit-font-smoothing: antialiased;
+//   -moz-osx-font-smoothing: grayscale;
+// }
+
+// /* Custom utility classes */
+// .text-center {
+//   text-align: center;
+// }
+
+// .mt-1 {
+//   margin-top: var(--ion-margin);
+// }
+
+// .mb-1 {
+//   margin-bottom: var(--ion-margin);
+// }
+
+// /* Add any other global styles below */
+
+ion-button {
+  --color: var(--ion-color-light);
+  text-transform: uppercase;
+  font-weight: 600;
+
+  &[disabled] {
+    --background: var(--ion-color-tertiary);
+  }
+}
+
+// ion-input {
+//   .ion-invalid,
+//   .ion-touched {
+//     border-color: var(--ion-color-danger);
+//     color: var(--ion-color-danger);
+//   }
+
+//   &::placeholder {
+//     color: var(--ion-color-danger);
+//   }
+// }
+
+// ion-back-button {
+//   color: var(--ion-background-color);
+// }
+
+// form {
+//   display: flex;
+//   gap: 1rem;
+
+//   ion-item {
+//     display: flex;
+//     flex-direction: column;
+//     gap: 0.5rem;
+//   }
+
+//   ion-list {
+//     display: flex;
+//     flex-direction: column;
+//     gap: 1rem;
+//     background: none;
+//   }
+// }
+
+// .error-message {
+//   display: block;
+//   text-align: center;
+//   color: var(--ion-color-danger);
+//   font-size: 12px;
+// }
+
+// ion-input,
+// ion-select {
+//   border-radius: 0.25rem;
+//   padding-left: 1rem;
+//   border: 1px solid #ccc;
+//   padding-left: 1rem;
+
+//   &.ion-invalid.ion-touched {
+//     border: 1px solid var(--ion-color-danger);
+//     color: var(--ion-color-danger);
+//   }
+
+//   &.ion-valid.ion-touched {
+//     border: 1px solid var(--ion-color-success);
+//     color: var(--ion-color-dark);
+//   }
+// }
+
+// .custom-toast {
+//   margin-top: 60px !important;
+// }

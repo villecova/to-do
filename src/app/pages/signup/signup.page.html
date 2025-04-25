@@ -1,0 +1,173 @@
+<ion-content [fullscreen]="true" class="ion-padding">
+  <ion-title class="ion-text-center ion-padding-top">
+    <h1 class="ion-text-center">Sign up</h1>
+  </ion-title>
+
+  <form action="" [formGroup]="formRegister" (ngSubmit)="signup()">
+    <ion-grid>
+      <ion-row>
+        <ion-col>
+          <ion-item lines="none">
+            <ion-input
+              fill="outline"
+              formControlName="name"
+              placeholder="Name"
+              type="text"
+            ></ion-input>
+          </ion-item>
+          <ion-row>
+            <ion-col>
+              <ng-container
+                [ngTemplateOutlet]="nameError"
+                *ngIf="formRegister.get('name')?.touched && formRegister.get('name')?.invalid"
+              >
+              </ng-container>
+            </ion-col>
+          </ion-row>
+        </ion-col>
+      </ion-row>
+
+      <ion-row>
+        <ion-col>
+          <ion-item lines="none">
+            <ion-input
+              fill="outline"
+              formControlName="email"
+              placeholder="E-mail"
+              type="email"
+            ></ion-input>
+          </ion-item>
+          <ion-row>
+            <ion-col>
+              <ng-container
+                [ngTemplateOutlet]="emailError"
+                *ngIf="formRegister.get('email')?.touched && formRegister.get('email')?.invalid"
+              >
+              </ng-container>
+            </ion-col>
+          </ion-row>
+        </ion-col>
+      </ion-row>
+
+      <ion-row>
+        <ion-col>
+          <ion-item lines="none">
+            <ion-input
+              fill="outline"
+              formControlName="password"
+              placeholder="Password"
+              type="password"
+            >
+              <ion-input-password-toggle slot="end"></ion-input-password-toggle>
+            </ion-input>
+          </ion-item>
+          <ion-row>
+            <ion-col>
+              <ng-container
+                [ngTemplateOutlet]="passwordError"
+                *ngIf="formRegister.get('password')?.touched && formRegister.get('password')?.invalid"
+              >
+              </ng-container>
+            </ion-col>
+          </ion-row>
+        </ion-col>
+      </ion-row>
+
+      <ion-row>
+        <ion-col>
+          <ion-item lines="none">
+            <ion-input
+              fill="outline"
+              formControlName="confirmPassword"
+              placeholder="Confirm Password"
+              type="password"
+            >
+              <ion-input-password-toggle slot="end"></ion-input-password-toggle>
+            </ion-input>
+          </ion-item>
+          <ion-row>
+            <ion-col>
+              <ng-container
+                [ngTemplateOutlet]="confirmPasswordError"
+                *ngIf="formRegister.get('confirmPassword')?.touched && formRegister.get('confirmPassword')?.invalid"
+              >
+              </ng-container>
+            </ion-col>
+          </ion-row>
+        </ion-col>
+      </ion-row>
+
+      <ion-row>
+        <ion-col>
+          <ion-button
+            type="submit"
+            expand="block"
+            class="ion-margin-horizontal"
+            [disabled]="formRegister.invalid"
+          >
+            Sign up
+          </ion-button>
+        </ion-col>
+      </ion-row>
+
+      <ion-row>
+        <ion-col>
+          <ion-item lines="none">
+            <ion-note class="register-button">
+              Already a member?
+              <a color="primary" (click)="backToLogin()"> Sign in </a>
+            </ion-note>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </form>
+</ion-content>
+
+<ng-template #nameError>
+  <ion-note color="danger" class="error-message">
+    <ng-container *ngIf="formRegister.get('name')?.hasError('required')">
+      This field is required.
+    </ng-container>
+    <ng-container *ngIf="formRegister.get('name')?.hasError('minlength')">
+      Name should have at least 3 characters.
+    </ng-container>
+  </ion-note>
+</ng-template>
+
+<ng-template #emailError>
+  <ion-note color="danger" class="error-message">
+    <ng-container *ngIf="formRegister.get('email')?.hasError('required')">
+      This field is required.
+    </ng-container>
+    <ng-container
+      *ngIf="!formRegister.get('email')?.hasError('required') && formRegister.get('email')?.hasError('email')"
+    >
+      Please enter a valid email address.
+    </ng-container>
+  </ion-note>
+</ng-template>
+
+<ng-template #passwordError>
+  <ion-note color="danger" class="error-message">
+    <ng-container *ngIf="formRegister.get('password')?.hasError('required')">
+      This field is required.
+    </ng-container>
+    <ng-container *ngIf="formRegister.get('password')?.hasError('minlength')">
+      Password must be at least 6 characters.
+    </ng-container>
+  </ion-note>
+</ng-template>
+
+<ng-template #confirmPasswordError>
+  <ion-note color="danger" class="error-message">
+    <ng-container
+      *ngIf="formRegister.get('confirmPassword')?.hasError('required')"
+    >
+      This field is required.
+    </ng-container>
+    <ng-container *ngIf="formRegister.errors?.['passwordMismatch']">
+      Passwords do not match.
+    </ng-container>
+  </ion-note>
+</ng-template>

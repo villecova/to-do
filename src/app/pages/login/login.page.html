@@ -1,0 +1,112 @@
+<ion-content [fullscreen]="true" class="ion-padding">
+  <ion-title class="ion-text-center ion-padding-top">
+    <h1 class="ion-text-center">Welcome back</h1>
+  </ion-title>
+
+  <form action="" [formGroup]="formLogin" (ngSubmit)="login()">
+    <ion-grid>
+      <ion-row>
+        <ion-col>
+          <ion-item lines="none">
+            <ion-input
+              fill="outline"
+              formControlName="email"
+              placeholder="E-mail"
+              type="email"
+            ></ion-input>
+          </ion-item>
+          <ion-row>
+            <ion-col>
+              <ng-container
+                [ngTemplateOutlet]="emailError"
+                *ngIf="formLogin.get('email')?.touched && formLogin.get('email')?.invalid"
+              ></ng-container>
+            </ion-col>
+          </ion-row>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col>
+          <ion-item lines="none">
+            <ion-input
+              fill="outline"
+              formControlName="password"
+              placeholder="Password"
+              type="password"
+            >
+              <ion-input-password-toggle slot="end"></ion-input-password-toggle>
+            </ion-input>
+          </ion-item>
+
+          <ion-row>
+            <ion-col>
+              <ng-container
+                [ngTemplateOutlet]="passwordError"
+                *ngIf="formLogin.get('password')?.touched && formLogin.get('password')?.invalid"
+              ></ng-container>
+            </ion-col>
+          </ion-row>
+        </ion-col>
+      </ion-row>
+
+      <ion-row>
+        <ion-col>
+          <ion-button
+            type="submit"
+            expand="block"
+            class="ion-margin-horizontal"
+            [disabled]="formLogin.invalid"
+          >
+            Sign in
+          </ion-button>
+        </ion-col>
+      </ion-row>
+
+      <ion-row>
+        <ion-col>
+          <ion-item lines="none" (click)="goToResetPassword()">
+            <ion-note color="primary" class="ion-text-center forgot-button"
+              >Forgot your password?</ion-note
+            >
+          </ion-item>
+        </ion-col>
+      </ion-row>
+
+      <ion-row>
+        <ion-col>
+          <ion-item lines="none">
+            <ion-note class="register-button">
+              Don't have an account?
+              <a color="primary" (click)="goToRegister()"> Sign up </a>
+            </ion-note>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </form>
+</ion-content>
+
+<ng-template #emailError>
+  <ion-note color="danger" class="error-message">
+    <ng-container *ngIf="formLogin.get('email')?.hasError('required')">
+      This field is required.
+    </ng-container>
+    <ng-container
+      *ngIf="!formLogin.get('email')?.hasError('required') && formLogin.get('email')?.hasError('email')"
+    >
+      Please enter a valid email address.
+    </ng-container>
+  </ion-note>
+</ng-template>
+
+<ng-template #passwordError>
+  <ion-note
+    color="danger"
+    class="error-message"
+    *ngIf="formLogin.get('password')?.touched && formLogin.get('password')?.invalid"
+  >
+    <ng-container *ngIf="formLogin.get('password')?.hasError('required')">
+      This field is required.
+    </ng-container>
+  </ion-note>
+</ng-template>

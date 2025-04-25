@@ -6,13 +6,13 @@ export const environment = {
   production: false,
 
   firebaseConfig: {
-    apiKey: 'dummy-api-key',
-    authDomain: 'dummy-auth-domain.firebaseapp.com',
-    projectId: 'dummy-project-id',
-    storageBucket: 'dummy-storage-bucket.appspot.com',
-    messagingSenderId: 'dummy-messaging-sender-id',
-    appId: 'dummy-app-id',
-    measurementId: 'dummy-measurement-id',
+    apiKey: 'AIzaSyC-3hDw3W_jD_4OcxEkrxNM_TXRZPaCb5I',
+    authDomain: 'to-do-b1772.firebaseapp.com',
+    projectId: 'to-do-b1772',
+    storageBucket: 'to-do-b1772.firebasestorage.app',
+    messagingSenderId: '383914190560',
+    appId: '1:383914190560:web:d0ab47ab9e14bf54dc1285',
+    measurementId: 'G-8E6J6KG0WT',
   },
 }
 

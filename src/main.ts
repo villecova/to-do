@@ -22,7 +22,7 @@ bootstrapApplication(AppComponent, {
     provideIonicAngular(),
     provideRouter(routes, withPreloading(PreloadAllModules)),
     provideFirebaseApp(() => initializeApp(environment.firebaseConfig)),
-    // provideFirestore(() => getFirestore()),
+    provideFirestore(() => getFirestore()),
     provideAuth(() => getAuth()),
   ],
 })

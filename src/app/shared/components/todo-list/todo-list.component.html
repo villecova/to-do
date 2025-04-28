@@ -1,0 +1,41 @@
+<ion-list>
+  <ion-card class="ion-padding" *ngFor="let exercise of exercisesList">
+    <!-- <ion-img
+      src="https://ionicframework.com/docs/img/demos/thumbnail.svg"
+    ></ion-img> -->
+    <div>
+      <div>
+        <ion-chip> {{ exercise.sets }} x {{ exercise.reps }} </ion-chip>
+        <ion-card-title>{{ exercise.name }}</ion-card-title>
+      </div>
+    </div>
+    <div class="content-container">
+      <ion-label>180 lbs</ion-label>
+    </div>
+    <ion-checkbox></ion-checkbox>
+    <ion-icon
+      size="large"
+      color="danger"
+      name="close-circle-outline"
+    ></ion-icon>
+  </ion-card>
+</ion-list>
+
+<!-- <ion-row>
+    <ion-col size="12">
+      <ion-list>
+        <ion-item *ngFor="let todo of toDoList">
+          <ion-card>
+            <ion-card-header>
+              <ion-checkbox></ion-checkbox>
+              <ion-card-title>{{ todo.title }}</ion-card-title>
+            </ion-card-header>
+            <ion-card-content>
+              <ion-label>{{ todo.description }}</ion-label>
+              <ion-note>Due Date: {{ todo.dueDate | date }}</ion-note>
+            </ion-card-content>
+          </ion-card>
+        </ion-item>
+      </ion-list>
+    </ion-col>
+  </ion-row> -->

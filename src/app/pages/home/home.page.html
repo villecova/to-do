@@ -4,10 +4,8 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <div id="container">
-    <ion-button expand="full" class="ion-margin-horizontal" (click)="logOut()">
-      Logout
-    </ion-button>
-  </div>
+<ion-content [fullscreen]="true" class="ion-padding">
+  <ion-title>Rutina de Hoy</ion-title>
+  <app-todo-list></app-todo-list>
 </ion-content>
+

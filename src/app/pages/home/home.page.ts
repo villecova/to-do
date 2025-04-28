@@ -6,15 +6,35 @@ import {
   IonTitle,
   IonContent,
   IonButton,
+  IonList,
+  IonItem,
+  IonLabel,
+  IonGrid,
+  IonRow,
+  IonCol,
 } from '@ionic/angular/standalone'
 import { AuthService } from 'src/app/core/services/auth/auth.service'
 import { LoadingController } from '@ionic/angular'
+import { TodoListComponent } from "../../shared/components/todo-list/todo-list.component";
 
 @Component({
   selector: 'app-home',
   templateUrl: 'home.page.html',
   styleUrls: ['home.page.scss'],
-  imports: [IonButton, IonHeader, IonToolbar, IonTitle, IonContent],
+  imports: [
+    IonButton,
+    IonHeader,
+    IonToolbar,
+    IonTitle,
+    IonContent,
+    IonList,
+    IonItem,
+    IonLabel,
+    IonGrid,
+    IonRow,
+    IonCol,
+    TodoListComponent
+],
 })
 export class HomePage {
   constructor(

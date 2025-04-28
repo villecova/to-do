@@ -1,0 +1,43 @@
+ion-list {
+  background: transparent;
+}
+
+ion-card {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+ion-img {
+  width: 50px;
+  height: 50px;
+}
+
+ion-card {
+  display: flex;
+}
+
+ion-label {
+  font-size: 1.25rem;
+}
+
+ion-checkbox {
+  margin-left: auto;
+}
+
+.content-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+
+  &__title {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 0.25rem;
+
+    ion-chip {
+      font-weight: 600;
+    }
+  }
+}

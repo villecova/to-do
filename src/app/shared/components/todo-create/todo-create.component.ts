@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core'
+import { Component, EventEmitter, inject, OnInit, Output } from '@angular/core'
 import { FormControl, Validators } from '@angular/forms'
 import { FormGroup, ReactiveFormsModule, FormsModule } from '@angular/forms'
 import {
@@ -7,6 +7,7 @@ import {
   IonLabel,
   IonButton,
 } from '@ionic/angular/standalone'
+import { ExerciseService } from 'src/app/core/services/exercise/exercise.service'
 
 @Component({
   selector: 'app-todo-create',
@@ -24,6 +25,8 @@ import {
 export class TodoCreateComponent implements OnInit {
   todoForm!: FormGroup
 
+  private exerciseService = inject(ExerciseService)
+
   @Output() save = new EventEmitter<any>()
 
   constructor() {}
@@ -38,6 +41,7 @@ export class TodoCreateComponent implements OnInit {
       reps: new FormControl('', [Validators.required]),
       sets: new FormControl('', [Validators.required]),
       weight: new FormControl('', [Validators.required]),
+      completed: new FormControl(false),
     })
   }
 
@@ -47,6 +51,9 @@ export class TodoCreateComponent implements OnInit {
     }
 
     //post the todo to the database
+    this.exerciseService.addExercise(this.todoForm.value).then(() => {
+      console.log('Exercise added successfully')
+    })
     this.save.emit(this.todoForm.value)
     this.resetForm()
   }

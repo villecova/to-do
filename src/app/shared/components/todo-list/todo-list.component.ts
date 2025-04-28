@@ -36,7 +36,7 @@ import { addIcons } from 'ionicons'
 import { closeCircleOutline } from 'ionicons/icons'
 import { OverlayEventDetail } from '@ionic/core/components'
 import { TodoCreateComponent } from '../todo-create/todo-create.component'
-import { ModalController } from '@ionic/angular'
+import { ExerciseService } from 'src/app/core/services/exercise/exercise.service'
 @Component({
   selector: 'app-todo-list',
   templateUrl: './todo-list.component.html',
@@ -76,9 +76,10 @@ import { ModalController } from '@ionic/angular'
     IonInput,
     TodoCreateComponent,
   ],
-  providers: [ModalController],
 })
 export class TodoListComponent implements OnInit {
+  private exerciseService = inject(ExerciseService)
+
   @ViewChild(IonModal) modal!: IonModal
   @ViewChild(TodoCreateComponent) todoCreateComponent!: TodoCreateComponent
 
@@ -89,8 +90,11 @@ export class TodoListComponent implements OnInit {
 
   // private exerciseService = inject(ExerciseService)
 
-  constructor(private modalController: ModalController) {
+  constructor() {
     addIcons({ closeCircleOutline })
+    this.exerciseService.getExercises().subscribe((exercises) => {
+      this.exercisesList = exercises
+    })
   }
 
   ngOnInit() {}
@@ -103,6 +107,14 @@ export class TodoListComponent implements OnInit {
     exercise.completed = !exercise.completed
     console.log('exercise.completed:::', exercise.completed)
     //save the item in the database
+    this.exerciseService
+      .updateExercise(exercise.id, exercise)
+      .then(() => {
+        console.log('Exercise updated successfully')
+      })
+      .catch((error) => {
+        console.log('Error updating exercise:::', error)
+      })
   }
 
   markAsCompleted(exercise: Exercise) {
@@ -119,6 +131,9 @@ export class TodoListComponent implements OnInit {
 
   deleteExercise(exercise: Exercise) {
     //delete the item in the database
+    this.exerciseService.deleteExercise(exercise.id).then(() => {
+      console.log('Exercise deleted successfully')
+    })
   }
 
   get pendingExercises() {

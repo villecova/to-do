@@ -1,3 +1,39 @@
-<p>
-  todo-create works!
-</p>
+<form [formGroup]="todoForm">
+  <ion-item>
+    <ion-input
+      placeholder="Nombre del ejercicio"
+      type="text"
+      formControlName="name"
+    ></ion-input>
+  </ion-item>
+  <ion-item>
+    <ion-input
+      placeholder="Repeticiones"
+      type="number"
+      formControlName="reps"
+    ></ion-input>
+  </ion-item>
+  <ion-item>
+    <ion-input
+      placeholder="Series"
+      type="number"
+      formControlName="sets"
+    ></ion-input>
+  </ion-item>
+  <ion-item>
+    <ion-input
+      placeholder="Peso"
+      type="number"
+      formControlName="weight"
+    ></ion-input>
+  </ion-item>
+  <ion-button
+    class="ion-margin-top"
+    expand="block"
+    type="submit"
+    [disabled]="todoForm.invalid"
+    (click)="onSubmit()"
+  >
+    Agregar
+  </ion-button>
+</form>

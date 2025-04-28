@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core'
+import { Component, inject, OnInit, ViewChild } from '@angular/core'
 import { Todo } from 'src/app/core/models/todo.model'
 import {
   IonList,
@@ -17,23 +17,32 @@ import {
   IonCardSubtitle,
   IonThumbnail,
   IonImg,
-  IonInput,
   IonChip,
   IonIcon,
   IonButton,
   IonListHeader,
+  IonModal,
+  IonButtons,
+  IonHeader,
+  IonToolbar,
+  IonTitle,
+  IonContent,
+  IonInput,
 } from '@ionic/angular/standalone'
 import { NgFor } from '@angular/common'
 import { DatePipe } from '@angular/common'
 import { Exercise } from 'src/app/core/models/exercise.model'
 import { addIcons } from 'ionicons'
 import { closeCircleOutline } from 'ionicons/icons'
-
+import { OverlayEventDetail } from '@ionic/core/components'
+import { TodoCreateComponent } from '../todo-create/todo-create.component'
+import { ModalController } from '@ionic/angular'
 @Component({
   selector: 'app-todo-list',
   templateUrl: './todo-list.component.html',
   styleUrls: ['./todo-list.component.scss'],
   imports: [
+    IonButtons,
     IonCardSubtitle,
     IonText,
     IonList,
@@ -58,34 +67,29 @@ import { closeCircleOutline } from 'ionicons/icons'
     IonButton,
     IonListHeader,
     NgFor,
+    IonModal,
+    IonHeader,
+    IonToolbar,
+    IonTitle,
+    IonContent,
+    IonItem,
+    IonInput,
+    TodoCreateComponent,
   ],
+  providers: [ModalController],
 })
 export class TodoListComponent implements OnInit {
-  exercisesList: Exercise[] = [
-    {
-      id: '1',
-      name: 'Exercise 1',
-      reps: 10,
-      sets: 3,
-      weight: 100,
-    },
-    {
-      id: '2',
-      name: 'Exercise 2',
-      reps: 10,
-      sets: 3,
-      weight: 100,
-    },
-    {
-      id: '3',
-      name: 'Exercise 3',
-      reps: 10,
-      sets: 3,
-      weight: 100,
-    },
-  ]
+  @ViewChild(IonModal) modal!: IonModal
+  @ViewChild(TodoCreateComponent) todoCreateComponent!: TodoCreateComponent
 
-  constructor() {
+  message =
+    'This modal example uses triggers to automatically open a modal when the button is clicked.'
+  name!: string
+  exercisesList: Exercise[] = []
+
+  // private exerciseService = inject(ExerciseService)
+
+  constructor(private modalController: ModalController) {
     addIcons({ closeCircleOutline })
   }
 
@@ -123,5 +127,36 @@ export class TodoListComponent implements OnInit {
 
   get completedExercises() {
     return this.exercisesList.filter((e) => e.completed)
+  }
+
+  cancel() {
+    this.modal.dismiss(null, 'cancel')
+  }
+
+  confirm() {
+    this.modal.dismiss(this.name, 'confirm')
+  }
+
+  onWillDismiss(event: CustomEvent<OverlayEventDetail>) {
+    if (event.detail.role === 'confirm') {
+      this.message = `Hello, ${event.detail.data}!`
+    }
+
+    this.todoCreateComponent.resetForm()
+  }
+
+  handleSave(exercise: Exercise) {
+    const newExercise: Exercise = {
+      ...exercise,
+      completed: false, // <-- todos los nuevos ejercicios empiezan no completados
+    }
+
+    this.exercisesList.push(newExercise)
+    this.closeModal()
+    console.log('this.exercisesList:::', this.exercisesList)
+  }
+
+  closeModal() {
+    this.modal.dismiss(null, 'cancel')
   }
 }

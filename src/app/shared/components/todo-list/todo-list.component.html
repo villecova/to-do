@@ -57,7 +57,26 @@
   </ion-card>
 </ion-list>
 
-<ion-button expand="block" color="primary">
+<ion-button id="open-modal" expand="block">
   <ion-icon name="add-circle-outline"></ion-icon>
   <ion-label>Agregar Ejercicio</ion-label>
 </ion-button>
+
+<ion-modal trigger="open-modal" (willDismiss)="onWillDismiss($event)">
+  <ng-template>
+    <ion-header>
+      <ion-toolbar>
+        <ion-buttons slot="start">
+          <ion-button (click)="cancel()">Cancel</ion-button>
+        </ion-buttons>
+        <ion-title>Welcome</ion-title>
+        <ion-buttons slot="end">
+          <ion-button (click)="confirm()" [strong]="true">Confirm</ion-button>
+        </ion-buttons>
+      </ion-toolbar>
+    </ion-header>
+    <ion-content class="ion-padding">
+      <app-todo-create (save)="handleSave($event)"></app-todo-create>
+    </ion-content>
+  </ng-template>
+</ion-modal>

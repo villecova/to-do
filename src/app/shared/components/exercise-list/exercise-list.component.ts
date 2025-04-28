@@ -35,12 +35,12 @@ import { Exercise } from 'src/app/core/models/exercise.model'
 import { addIcons } from 'ionicons'
 import { closeCircleOutline } from 'ionicons/icons'
 import { OverlayEventDetail } from '@ionic/core/components'
-import { TodoCreateComponent } from '../todo-create/todo-create.component'
+import { ExerciseCreateComponent } from '../exercise-create/exercise-create.component'
 import { ExerciseService } from 'src/app/core/services/exercise/exercise.service'
 @Component({
-  selector: 'app-todo-list',
-  templateUrl: './todo-list.component.html',
-  styleUrls: ['./todo-list.component.scss'],
+  selector: 'app-exercise-list',
+  templateUrl: './exercise-list.component.html',
+  styleUrls: ['./exercise-list.component.scss'],
   imports: [
     IonButtons,
     IonCardSubtitle,
@@ -74,14 +74,15 @@ import { ExerciseService } from 'src/app/core/services/exercise/exercise.service
     IonContent,
     IonItem,
     IonInput,
-    TodoCreateComponent,
+    ExerciseCreateComponent,
   ],
 })
-export class TodoListComponent implements OnInit {
+export class ExerciseListComponent implements OnInit {
   private exerciseService = inject(ExerciseService)
 
   @ViewChild(IonModal) modal!: IonModal
-  @ViewChild(TodoCreateComponent) todoCreateComponent!: TodoCreateComponent
+  @ViewChild(ExerciseCreateComponent)
+  exerciseCreateComponent!: ExerciseCreateComponent
 
   message =
     'This modal example uses triggers to automatically open a modal when the button is clicked.'
@@ -157,7 +158,7 @@ export class TodoListComponent implements OnInit {
       this.message = `Hello, ${event.detail.data}!`
     }
 
-    this.todoCreateComponent.resetForm()
+    this.exerciseCreateComponent.resetForm()
   }
 
   handleSave(exercise: Exercise) {

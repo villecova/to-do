@@ -1,19 +1,19 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { IonicModule } from '@ionic/angular';
 
-import { TodoListComponent } from './todo-list.component';
+import { TodoCreateComponent } from './exercise-create.component';
 
-describe('TodoListComponent', () => {
-  let component: TodoListComponent;
-  let fixture: ComponentFixture<TodoListComponent>;
+describe('TodoCreateComponent', () => {
+  let component: TodoCreateComponent;
+  let fixture: ComponentFixture<TodoCreateComponent>;
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ TodoListComponent ],
+      declarations: [ TodoCreateComponent ],
       imports: [IonicModule.forRoot()]
     }).compileComponents();
 
-    fixture = TestBed.createComponent(TodoListComponent);
+    fixture = TestBed.createComponent(TodoCreateComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   }));

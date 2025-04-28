@@ -15,7 +15,7 @@ import {
 } from '@ionic/angular/standalone'
 import { AuthService } from 'src/app/core/services/auth/auth.service'
 import { LoadingController } from '@ionic/angular'
-import { TodoListComponent } from "../../shared/components/todo-list/todo-list.component";
+import { ExerciseListComponent } from '../../shared/components/exercise-list/exercise-list.component'
 
 @Component({
   selector: 'app-home',
@@ -33,8 +33,8 @@ import { TodoListComponent } from "../../shared/components/todo-list/todo-list.c
     IonGrid,
     IonRow,
     IonCol,
-    TodoListComponent
-],
+    ExerciseListComponent,
+  ],
 })
 export class HomePage {
   constructor(

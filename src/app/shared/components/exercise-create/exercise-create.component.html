@@ -1,4 +1,7 @@
-<form [formGroup]="todoForm">
+<h2>{{ isEditing ? 'Editar ejercico' : 'Agregar ejercicio' }}</h2>
+<!-- <h2 *ngIf="todoToEdit">Editar Ejercicio</h2> -->
+
+<form [formGroup]="exerciseForm">
   <ion-item>
     <ion-input
       placeholder="Nombre del ejercicio"
@@ -31,10 +34,10 @@
     class="ion-margin-top"
     expand="block"
     type="submit"
-    [disabled]="todoForm.invalid"
+    [disabled]="exerciseForm.invalid"
     (click)="onSubmit()"
   >
-    Agregar
+    {{ isEditing ? 'Editar' : 'Agregar' }}
   </ion-button>
   <ion-item lines="none">
     <ion-label>

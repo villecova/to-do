@@ -9,7 +9,11 @@ import {
   IonicRouteStrategy,
   provideIonicAngular,
 } from '@ionic/angular/standalone'
-import { provideFirestore, getFirestore } from '@angular/fire/firestore'
+import {
+  provideFirestore,
+  initializeFirestore,
+  CACHE_SIZE_UNLIMITED,
+} from '@angular/fire/firestore'
 import { environment } from './environments/environment'
 import { provideFirebaseApp, initializeApp } from '@angular/fire/app'
 import { provideAuth, getAuth } from '@angular/fire/auth'
@@ -22,7 +26,16 @@ bootstrapApplication(AppComponent, {
     provideIonicAngular(),
     provideRouter(routes, withPreloading(PreloadAllModules)),
     provideFirebaseApp(() => initializeApp(environment.firebaseConfig)),
-    provideFirestore(() => getFirestore()),
+    provideFirestore(() => {
+      const firestore = initializeFirestore(
+        initializeApp(environment.firebaseConfig),
+        {
+          cacheSizeBytes: CACHE_SIZE_UNLIMITED,
+          experimentalForceLongPolling: true,
+        }
+      )
+      return firestore
+    }),
     provideAuth(() => getAuth()),
   ],
 })

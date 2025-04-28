@@ -1,8 +1,9 @@
 <ion-list>
-  <ion-card class="ion-padding" *ngFor="let exercise of exercisesList">
-    <!-- <ion-img
-      src="https://ionicframework.com/docs/img/demos/thumbnail.svg"
-    ></ion-img> -->
+  <ion-list-header>
+    <ion-label>Ejercicios Pendientes</ion-label>
+  </ion-list-header>
+
+  <ion-card class="ion-padding" *ngFor="let exercise of pendingExercises">
     <div>
       <div>
         <ion-chip> {{ exercise.sets }} x {{ exercise.reps }} </ion-chip>
@@ -12,12 +13,51 @@
     <div class="content-container">
       <ion-label>180 lbs</ion-label>
     </div>
-    <ion-checkbox></ion-checkbox>
+    <ion-checkbox
+      [checked]="exercise.completed"
+      (ionChange)="completedToogle(exercise)"
+    ></ion-checkbox>
     <ion-icon
       size="large"
       color="danger"
       name="close-circle-outline"
+      (click)="deleteExercise(exercise)"
     ></ion-icon>
   </ion-card>
 </ion-list>
 
+<ion-list>
+  <ion-list-header>
+    <ion-label>Ejercicios Completados</ion-label>
+  </ion-list-header>
+
+  <ion-card class="ion-padding" *ngFor="let exercise of completedExercises">
+    <div>
+      <div>
+        <ion-chip> {{ exercise.sets }} x {{ exercise.reps }} </ion-chip>
+        <ion-card-title
+          [style.text-decoration]="exercise.completed ? 'line-through' : 'none'"
+          >{{ exercise.name }}</ion-card-title
+        >
+      </div>
+    </div>
+    <div class="content-container">
+      <ion-label>180 lbs</ion-label>
+    </div>
+    <ion-checkbox
+      [checked]="exercise.completed"
+      (ionChange)="completedToogle(exercise)"
+    ></ion-checkbox>
+    <ion-icon
+      size="large"
+      color="danger"
+      name="close-circle-outline"
+      (click)="deleteExercise(exercise)"
+    ></ion-icon>
+  </ion-card>
+</ion-list>
+
+<ion-button expand="block" color="primary">
+  <ion-icon name="add-circle-outline"></ion-icon>
+  <ion-label>Agregar Ejercicio</ion-label>
+</ion-button>

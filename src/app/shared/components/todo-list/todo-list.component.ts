@@ -20,6 +20,8 @@ import {
   IonInput,
   IonChip,
   IonIcon,
+  IonButton,
+  IonListHeader,
 } from '@ionic/angular/standalone'
 import { NgFor } from '@angular/common'
 import { DatePipe } from '@angular/common'
@@ -53,36 +55,12 @@ import { closeCircleOutline } from 'ionicons/icons'
     IonInput,
     IonChip,
     IonIcon,
+    IonButton,
+    IonListHeader,
+    NgFor,
   ],
 })
 export class TodoListComponent implements OnInit {
-  toDoList: Todo[] = [
-    {
-      id: 1,
-      title: 'Todo 1',
-      description: 'Description 1',
-      dueDate: new Date('2025-01-01'),
-      priority: 'high',
-      completed: false,
-    },
-    {
-      id: 2,
-      title: 'Todo 2',
-      description: 'Description 2',
-      dueDate: new Date('2025-01-02'),
-      priority: 'medium',
-      completed: false,
-    },
-    {
-      id: 3,
-      title: 'Todo 3',
-      description: 'Description 3',
-      dueDate: new Date('2025-01-03'),
-      priority: 'low',
-      completed: false,
-    },
-  ]
-
   exercisesList: Exercise[] = [
     {
       id: '1',
@@ -112,4 +90,38 @@ export class TodoListComponent implements OnInit {
   }
 
   ngOnInit() {}
+
+  addNewExercise() {
+    //open a modal to add a new exercise
+  }
+
+  completedToogle(exercise: Exercise) {
+    exercise.completed = !exercise.completed
+    console.log('exercise.completed:::', exercise.completed)
+    //save the item in the database
+  }
+
+  markAsCompleted(exercise: Exercise) {
+    exercise.completed = true
+    console.log('exercise.completed:::', exercise.completed)
+    //save the item in the database
+  }
+
+  markAsUncompleted(exercise: Exercise) {
+    exercise.completed = false
+    console.log('exercise.completed:::', exercise.completed)
+    //save the item in the database
+  }
+
+  deleteExercise(exercise: Exercise) {
+    //delete the item in the database
+  }
+
+  get pendingExercises() {
+    return this.exercisesList.filter((e) => !e.completed)
+  }
+
+  get completedExercises() {
+    return this.exercisesList.filter((e) => e.completed)
+  }
 }

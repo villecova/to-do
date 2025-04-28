@@ -7,7 +7,7 @@ export const routes: Routes = [
     path: 'login',
     loadComponent: () =>
       import('./pages/login/login.page').then((m) => m.LoginPage),
-    // canActivate: [noAuthGuard],
+    canActivate: [noAuthGuard],
   },
   {
     path: '',
@@ -18,7 +18,7 @@ export const routes: Routes = [
     path: 'signup',
     loadComponent: () =>
       import('./pages/signup/signup.page').then((m) => m.SignupPage),
-    // canActivate: [noAuthGuard],
+    canActivate: [noAuthGuard],
   },
   {
     path: 'reset-password',
@@ -26,19 +26,19 @@ export const routes: Routes = [
       import('./pages/reset-password/reset-password.page').then(
         (m) => m.ResetPasswordPage
       ),
-    // canActivate: [noAuthGuard],
+    canActivate: [noAuthGuard],
   },
   {
     path: 'welcome',
     loadComponent: () =>
       import('./pages/welcome/welcome.page').then((m) => m.WelcomePage),
-    // canActivate: [authGuard],
+    canActivate: [authGuard],
   },
 
   {
     path: 'home',
     loadComponent: () =>
       import('./pages/home/home.page').then((m) => m.HomePage),
-    // canActivate: [authGuard],
+    canActivate: [authGuard],
   },
 ]

@@ -45,7 +45,7 @@ export class HomePage {
 
   async logOut() {
     const loading = await this.loadingController.create({
-      message: 'Loading...',
+      message: 'Cerrando sesión...',
       spinner: 'bubbles',
       duration: 2000,
     })

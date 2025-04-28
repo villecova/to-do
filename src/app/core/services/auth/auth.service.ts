@@ -42,7 +42,7 @@ export class AuthService {
     return await signOut(this.auth)
   }
 
-  async getCurrentUser() {
+  getCurrentUser() {
     return this.auth.currentUser // o await currentUser(this.auth); para obtener una promesa
   }
 

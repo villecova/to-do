@@ -1,48 +1,66 @@
 import { Injectable } from '@angular/core'
 import {
   addDoc,
+  collection,
   collectionData,
-  docData,
+  deleteDoc,
+  doc,
   Firestore,
+  updateDoc,
 } from '@angular/fire/firestore'
-import { Exercise } from '../../models/exercise.model'
-import { collection, deleteDoc, doc, updateDoc } from 'firebase/firestore'
 import { Observable } from 'rxjs'
+import { map } from 'rxjs/operators'
+import { Exercise } from '../../models/exercise.model'
+import { AuthService } from '../auth/auth.service'
 
 @Injectable({
   providedIn: 'root',
 })
 export class ExerciseService {
-  private collectionName = 'Exercises'
-  constructor(private fireStore: Firestore) {}
+  private collectionName = 'users'
 
-  //crear ejercicio
+  constructor(private fireStore: Firestore, private authService: AuthService) {}
+
+  private getExercisesCollection() {
+    const user = this.authService.getCurrentUser()
+    if (!user) throw new Error('User not authenticated')
+    return collection(
+      this.fireStore,
+      `${this.collectionName}/${user.uid}/exercises`
+    )
+  }
+
   async addExercise(exercise: Exercise): Promise<void> {
-    const itemCollection = collection(this.fireStore, this.collectionName)
-    await addDoc(itemCollection, exercise)
+    const exercisesCollection = this.getExercisesCollection()
+    await addDoc(exercisesCollection, exercise)
   }
 
-  //obtener todos los ejercicios
-  getExercises(): Observable<any[]> {
-    const itemCollection = collection(this.fireStore, this.collectionName)
-    return collectionData(itemCollection, { idField: 'id' })
+  getExercises(): Observable<Exercise[]> {
+    const exercisesCollection = this.getExercisesCollection()
+    return collectionData(exercisesCollection, { idField: 'id' }) as Observable<
+      Exercise[]
+    >
   }
 
-  //obtener un ejercicio por id
-  getExerciseById(id: string): Observable<any> {
-    const itemDoc = doc(this.fireStore, `${this.collectionName}/${id}`)
-    return docData(itemDoc, { idField: 'id' })
+  async updateExercise(id: string, exercise: Partial<Exercise>): Promise<void> {
+    const user = this.authService.getCurrentUser()
+    if (!user) throw new Error('User not authenticated')
+
+    const exerciseDoc = doc(
+      this.fireStore,
+      `${this.collectionName}/${user.uid}/exercises/${id}`
+    )
+    await updateDoc(exerciseDoc, exercise)
   }
 
-  //update an exercise
-  async updateExercise(id: string, exercise: any): Promise<void> {
-    const itemDoc = doc(this.fireStore, `${this.collectionName}/${id}`)
-    await updateDoc(itemDoc, exercise)
-  }
-
-  //delete an exercise
   async deleteExercise(id: string): Promise<void> {
-    const itemDoc = doc(this.fireStore, `${this.collectionName}/${id}`)
-    await deleteDoc(itemDoc)
+    const user = this.authService.getCurrentUser()
+    if (!user) throw new Error('User not authenticated')
+
+    const exerciseDoc = doc(
+      this.fireStore,
+      `${this.collectionName}/${user.uid}/exercises/${id}`
+    )
+    await deleteDoc(exerciseDoc)
   }
 }

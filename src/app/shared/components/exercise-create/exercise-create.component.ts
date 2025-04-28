@@ -13,8 +13,10 @@ import {
   IonItem,
   IonLabel,
   IonButton,
+  ToastController,
 } from '@ionic/angular/standalone'
 import { ExerciseService } from 'src/app/core/services/exercise/exercise.service'
+import { Exercise } from 'src/app/core/models/exercise.model'
 
 @Component({
   selector: 'app-exercise-create',
@@ -30,12 +32,14 @@ import { ExerciseService } from 'src/app/core/services/exercise/exercise.service
   ],
 })
 export class ExerciseCreateComponent implements OnInit {
-  @Input() isEditing: any | null = null // Recibe el objeto a editar o null para crear uno nuevo
+  @Input() isEditing: Exercise | null = null
   exerciseForm!: FormGroup
 
   private exerciseService = inject(ExerciseService)
+  private toastController = inject(ToastController)
 
-  @Output() save = new EventEmitter<any>()
+  @Output() save = new EventEmitter<Exercise>()
+  @Output() cancel = new EventEmitter<void>()
 
   constructor() {}
 
@@ -49,33 +53,57 @@ export class ExerciseCreateComponent implements OnInit {
   initForm() {
     this.exerciseForm = new FormGroup({
       name: new FormControl('', [Validators.required]),
-      reps: new FormControl('', [Validators.required]),
-      sets: new FormControl('', [Validators.required]),
-      weight: new FormControl('', [Validators.required]),
+      reps: new FormControl('', [Validators.required, Validators.min(1)]),
+      sets: new FormControl('', [Validators.required, Validators.min(1)]),
+      weight: new FormControl('', [Validators.required, Validators.min(0)]),
       completed: new FormControl(false),
     })
   }
 
-  onSubmit() {
+  async onSubmit() {
     if (this.exerciseForm.invalid) {
+      const toast = await this.toastController.create({
+        message: 'Por favor completa todos los campos correctamente',
+        duration: 2000,
+        position: 'bottom',
+      })
+      await toast.present()
       return
     }
 
-    if (this.isEditing) {
-      // Lógica para editar
-      this.exerciseService
-        .updateExercise(this.isEditing.id, this.exerciseForm.value)
-        .then(() => {
-          console.log('Exercise updated successfully')
+    try {
+      const exerciseData = this.exerciseForm.value
+      if (this.isEditing) {
+        await this.exerciseService.updateExercise(
+          this.isEditing.id,
+          exerciseData
+        )
+        const toast = await this.toastController.create({
+          message: 'Ejercicio actualizado correctamente',
+          duration: 2000,
+          position: 'bottom',
         })
-    } else {
-      //post the todo to the database
-      this.exerciseService.addExercise(this.exerciseForm.value).then(() => {
-        console.log('Exercise added successfully')
+        await toast.present()
+        this.save.emit({ ...exerciseData, id: this.isEditing.id })
+      } else {
+        await this.exerciseService.addExercise(exerciseData)
+        const toast = await this.toastController.create({
+          message: 'Ejercicio agregado correctamente',
+          duration: 2000,
+          position: 'bottom',
+        })
+        await toast.present()
+        this.save.emit(exerciseData)
+      }
+      this.resetForm()
+    } catch (error) {
+      const toast = await this.toastController.create({
+        message: 'Error al guardar el ejercicio',
+        duration: 2000,
+        position: 'bottom',
       })
+      await toast.present()
     }
-    this.save.emit(this.exerciseForm.value)
-    this.resetForm()
   }
 
   resetForm() {
@@ -83,7 +111,11 @@ export class ExerciseCreateComponent implements OnInit {
     this.isEditing = null
   }
 
-  populateForm(todo: any) {
-    this.exerciseForm.patchValue(todo) // Llena el formulario con los valores del objeto a editar
+  populateForm(exercise: Exercise) {
+    this.exerciseForm.patchValue(exercise)
+  }
+
+  onCancel() {
+    this.cancel.emit()
   }
 }

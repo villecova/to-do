@@ -1,5 +1,4 @@
-import { Component, inject, OnInit, ViewChild } from '@angular/core'
-import { Todo } from 'src/app/core/models/todo.model'
+import { Component, inject, OnInit, ViewChild, OnDestroy } from '@angular/core'
 import {
   IonList,
   IonItem,
@@ -28,6 +27,7 @@ import {
   IonTitle,
   IonContent,
   IonInput,
+  ToastController,
 } from '@ionic/angular/standalone'
 import { NgFor } from '@angular/common'
 import { DatePipe } from '@angular/common'
@@ -37,6 +37,9 @@ import { closeCircleOutline } from 'ionicons/icons'
 import { OverlayEventDetail } from '@ionic/core/components'
 import { ExerciseCreateComponent } from '../exercise-create/exercise-create.component'
 import { ExerciseService } from 'src/app/core/services/exercise/exercise.service'
+import { AuthService } from 'src/app/core/services/auth/auth.service'
+import { Subscription } from 'rxjs'
+
 @Component({
   selector: 'app-exercise-list',
   templateUrl: './exercise-list.component.html',
@@ -77,37 +80,50 @@ import { ExerciseService } from 'src/app/core/services/exercise/exercise.service
     ExerciseCreateComponent,
   ],
 })
-export class ExerciseListComponent implements OnInit {
+export class ExerciseListComponent implements OnInit, OnDestroy {
   private exerciseService = inject(ExerciseService)
+  private authService = inject(AuthService)
+  private toastController = inject(ToastController)
+  private exerciseSubscription?: Subscription
 
   @ViewChild(IonModal) modal!: IonModal
   @ViewChild(ExerciseCreateComponent)
   exerciseCreateComponent!: ExerciseCreateComponent
 
-  message =
-    'This modal example uses triggers to automatically open a modal when the button is clicked.'
-  name!: string
   exercisesList: Exercise[] = []
-
-  // private exerciseService = inject(ExerciseService)
 
   constructor() {
     addIcons({ closeCircleOutline })
-    this.exerciseService.getExercises().subscribe((exercises) => {
-      this.exercisesList = exercises
+  }
+
+  ngOnInit() {
+    this.authService.userIsAuthenticated.subscribe((isAuthenticated) => {
+      if (isAuthenticated) {
+        // Cancelar la suscripción anterior si existe
+        if (this.exerciseSubscription) {
+          this.exerciseSubscription.unsubscribe()
+        }
+
+        // Crear nueva suscripción
+        this.exerciseSubscription = this.exerciseService
+          .getExercises()
+          .subscribe((exercises) => {
+            this.exercisesList = exercises
+          })
+      } else {
+        this.exercisesList = []
+      }
     })
   }
 
-  ngOnInit() {}
-
-  addNewExercise() {
-    //open a modal to add a new exercise
+  ngOnDestroy() {
+    if (this.exerciseSubscription) {
+      this.exerciseSubscription.unsubscribe()
+    }
   }
 
   completedToogle(exercise: Exercise) {
     exercise.completed = !exercise.completed
-    console.log('exercise.completed:::', exercise.completed)
-    //save the item in the database
     this.exerciseService
       .updateExercise(exercise.id, exercise)
       .then(() => {
@@ -118,23 +134,23 @@ export class ExerciseListComponent implements OnInit {
       })
   }
 
-  markAsCompleted(exercise: Exercise) {
-    exercise.completed = true
-    console.log('exercise.completed:::', exercise.completed)
-    //save the item in the database
-  }
-
-  markAsUncompleted(exercise: Exercise) {
-    exercise.completed = false
-    console.log('exercise.completed:::', exercise.completed)
-    //save the item in the database
-  }
-
-  deleteExercise(exercise: Exercise) {
-    //delete the item in the database
-    this.exerciseService.deleteExercise(exercise.id).then(() => {
-      console.log('Exercise deleted successfully')
-    })
+  async deleteExercise(exercise: Exercise) {
+    try {
+      await this.exerciseService.deleteExercise(exercise.id)
+      const toast = await this.toastController.create({
+        message: 'Ejercicio eliminado correctamente',
+        duration: 2000,
+        position: 'bottom',
+      })
+      await toast.present()
+    } catch (error) {
+      const toast = await this.toastController.create({
+        message: 'Error al eliminar el ejercicio',
+        duration: 2000,
+        position: 'bottom',
+      })
+      await toast.present()
+    }
   }
 
   get pendingExercises() {
@@ -149,27 +165,12 @@ export class ExerciseListComponent implements OnInit {
     this.modal.dismiss(null, 'cancel')
   }
 
-  confirm() {
-    this.modal.dismiss(this.name, 'confirm')
-  }
-
-  onWillDismiss(event: CustomEvent<OverlayEventDetail>) {
-    if (event.detail.role === 'confirm') {
-      this.message = `Hello, ${event.detail.data}!`
-    }
-
+  onWillDismiss() {
     this.exerciseCreateComponent.resetForm()
   }
 
   handleSave(exercise: Exercise) {
-    const newExercise: Exercise = {
-      ...exercise,
-      completed: false, // <-- todos los nuevos ejercicios empiezan no completados
-    }
-
-    this.exercisesList.push(newExercise)
     this.closeModal()
-    console.log('this.exercisesList:::', this.exercisesList)
   }
 
   closeModal() {
